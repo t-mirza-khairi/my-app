@@ -1,9 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
-import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "./navbar";
@@ -17,7 +13,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [state, setState] = useState(0);
   const pathName = usePathname();
   return (
     <html lang="en">
