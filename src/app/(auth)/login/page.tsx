@@ -1,18 +1,30 @@
 "use client";
 
+import { signIn } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function LoginPage() {
-  const handleLogin = (e: any) => {
+  const { push } = useRouter();
+  const handleLogin = async (e: any) => {
     e.preventDefault();
-    fetch("api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: e.currentTarget.email.value,
-        password: e.currentTarget.password.value,
-      }),
-    });
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: e.target.email.value,
+        password: e.target.password.value,
+        callbackUrl: "/dashboard",
+      });
+      if (!res?.error) {
+        push("/dashboard");
+      } else {
+        console.log(res.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="h-screen w-100 flex justify-center items-center">
